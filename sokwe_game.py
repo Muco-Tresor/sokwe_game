@@ -15,110 +15,81 @@ def sokwe_game():
     niruze_response = input("Sokwe:")
 
     while(niruze_response.lower() != "niruze" ):
-        print("Ntibishura", "*"+niruze_response+"*", "Bishura *Niruze* ")
+        print("Ntibishura *{}* Bishura *Niruze* ".format(niruze_response))
         niruze_response = input("Sokwe: ")
 
     try:
-        # get ibisokozos for files/ibisokozo.txt file
-        with open("files/ibisokozo.txt") ibisokozos_file:
 
         # empty dictionnary to store ibisokozo
         ibisokozo  = {}
 
-        for ibisokozo_file in ibisokozos_file:
-            # split igisokozo with the equal symbol and store it in tuple
-            (igisokozo, inyishu) = ibisokozo_file.split("=")
+        # get ibisokozos for files/ibisokozo.txt file
+        with open("files/ibisokozo.txt") as ibisokozos_file:
 
-            # format the igisokozo and inyishu by
-            # removing rounded spaces and lowercased them
-            # after store in the in an empty dictionnary created
-            igisokozo = igisokozo.strip().lower()
-            inyishu = inyishu.strip().lower()
+            for ibisokozo_file in ibisokozos_file:
+                # split igisokozo with the equal symbol and store it in tuple
+                (igisokozo, inyishu) = ibisokozo_file.split("=")
 
-            ibisokozo[igisokozo] = inyishu
+                # format the igisokozo and inyishu by
+                # removing rounded spaces and lowercased them
+                # after store in the in an empty dictionnary created
+                igisokozo = igisokozo
+                inyishu = inyishu
 
-        # Demand the user the number of questions he wants
-        # if he demands the number which won't surpass the number of ibisoko we have
-        # then we accept it else we give he all ibisokozo we have
-        question = int(input("Ushaka ibisokozo bingahe? :"))
+                ibisokozo[igisokozo] = inyishu
 
-        if(question <= len(ibisokozo)):
-            question = question
-        else:
-            question = len(ibisokozo)
+        # if for the question the user enter the string value throw an exception
+        try:
+            # Demand the user the number of questions he wants
+            # if he demands the number which won't surpass the number of ibisoko we have
+            # then we accept it else we give he all ibisokozo we have
+            questions = int(input("Ushaka ibisokozo bingahe?: "))
 
-        ibisokozo_list = sample(list(ibisokozo), question)
+            user_score = 0
+            divice_score = 0
 
-        for igisokozo in ibisokozo_list:
-            user_response = input(igisokozo + ":")
-            print(user_response)
+            if(questions <= len(ibisokozo)):
+                questions = questions
+            else:
+                questions = len(ibisokozo)
+
+
+            ibisokozo_list = sample(list(ibisokozo), questions)
+
+            for igisokozo in ibisokozo_list:
+                user_response = input(igisokozo + ": ")
+
+                user_response = user_response.strip().lower().replace(' ', '').replace('\'', '')
+
+                device_response = ibisokozo[igisokozo].strip().lower().replace(' ', '').replace('\'', '')
+
+                while(user_response != device_response and user_response != "ndaguhaye"):
+                    user_response = input("Uhh!! inyishu siyo ushaka kugerageza kandi? canke wishure *ndaguhaye*: ")
+
+                    user_response = user_response.strip().lower().replace(' ', '').replace('\'', '')
+
+                    if(user_response == "ndaguhaye"):
+                        break
+
+                if(user_response == "ndaguhaye"):
+
+                    print("\n\t Warikwishura ati: {} \n".format(ibisokozo[igisokozo]))
+
+                else:
+                    user_score += 1
+                    print("\n\tWell Done\n")
+
+            print("*************************************")
+            print( "Finish ! << score : ", user_score , '/' , questions )
+            print("*************************************")
+
+
+        except ValueError:
+            print("Please andika igiharuro apana ijambo")
+
 
     except FileNotFoundError:
         print("Sorry ububiko bwibisokozo ntabuhari tugiye kubikosora")
 
 
 sokwe_game()
-# try:
-#     # get ibisokozo
-#     ibisokozo_file = open('files/ibisokozo.txt')
-
-#     # a empty dict which will store all ibisokozo
-#     ibisokozo = {}
-
-
-#     #start the game
-#     niruze_response = input("Sokwe:")
-
-#     if(niruze_response.lower() == 'niruze'):
-#         for line in ibisokozo_file:
-#             # split the file in two parts by an equal symbol
-#             # and format the result
-#             (igisokozo, inyishu) = line.split('=')
-#             igisokozo = igisokozo.lower().strip()
-#             inyishu = inyishu
-#             # .lower().strip().replace('\'', '')
-
-#             # store ibisokozo in a dictionnary
-#             ibisokozo[igisokozo] = inyishu
-
-#         # asking the user number of questions
-#         # if he demand a number of ibisokozo which is lower than what we hava accept it
-#         # else asking  him the number of ibisokozo we have
-#         try:
-#             questions = int(input("Ushaka ibisokozo bingahe:"))
-
-#             if(questions <= len(ibisokozo)):
-#                 questions = questions
-#             else:
-#                 questions = len(ibisokozo)
-
-#             score = 0
-
-#             ibisokozo_list = sample(list(ibisokozo), questions)
-
-#             for igisokozo in ibisokozo_list:
-#                 user_response = input(igisokozo + ':')
-#                 user_response = user_response
-
-#                 if(user_response.strip().lower().replace('\'', '').replace(' ', '') == ibisokozo[igisokozo].lower().strip().replace('\'', '').replace(' ', '')):
-#                     score += 1
-#                     print("\n\tWell Done\n")
-#                 else:
-#                     print("\n\toya warikwishura ati: ", ibisokozo[igisokozo], "\n")
-
-#             print("*************************************")
-#             print( "Finish ! << score : ", score , '/' , questions )
-#             print("*************************************")
-
-#         except ValueError:
-#             print("please andika igiharuro apana ijambo ")
-
-#     else:
-#         print("Oya ntibishura", '***',niruze_response,'***' , '***bishura niruze***')
-
-
-# except FileNotFoundError:
-#     print("Sorry ububiko bwibisokozo ntabuhari tugiye kubikosora")
-
-# finally:
-#     ibisokozo_file.close()
